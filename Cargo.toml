@@ -4,14 +4,14 @@ version = "0.8.0"
 edition = "2024"
 description = "A PDF viewer for GPUI, rendered in pure Rust with hayro: virtualized pages, text search, highlights, and fillable forms."
 license = "MIT"
-repository = "https://github.com/packetThrower/zorite"
+repository = "https://github.com/packetThrower/gpui-pdf"
 homepage = "https://packetthrower.github.io/zorite/reference/crates/gpui-pdf/"
 keywords = ["gpui", "pdf", "viewer", "hayro", "acroform"]
 categories = ["gui", "rendering"]
 
 [dependencies]
-# Shared workspace spec (the root pins the rev) so Cargo unifies to one gpui.
-gpui = { workspace = true }
+# gpui ships on crates.io as the `gpui-pre` family; a caret spec so users aren't pinned to one snapshot.
+gpui = { package = "gpui-pre", version = "0.3" }
 
 # Pure-Rust PDF rasterizer (no native library, no system-font dependency).
 hayro = "0.9"
