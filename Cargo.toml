@@ -1,6 +1,6 @@
 [package]
 name = "gpui-pdf"
-version = "0.8.1"
+version = "0.8.2"
 edition = "2024"
 description = "A PDF viewer for GPUI, rendered in pure Rust with hayro: virtualized pages, text search, highlights, and fillable forms."
 license = "MIT"
@@ -11,7 +11,7 @@ categories = ["gui", "rendering"]
 
 [dependencies]
 # gpui ships on crates.io as the `gpui-pre` family; a caret spec so users aren't pinned to one snapshot.
-gpui = { package = "gpui-pre", version = "0.3" }
+gpui = { package = "gpui-pre", version = "0.3.12" }
 
 # Pure-Rust PDF rasterizer (no native library, no system-font dependency).
 hayro = "0.9"
