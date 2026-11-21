@@ -294,8 +294,10 @@ pub fn keep_window(
     (start, end)
 }
 
-/// The index of the topmost page intersecting the viewport top — the "current" page
-/// for a page counter. Pure; mirrors the slot layout.
+/// The index of the page under the line `y` (px down the column; callers pass
+/// the viewport's middle) — the "current" page for a page counter, so the last
+/// page counts once it fills the view even though it can't scroll to the top.
+/// Pure; mirrors the slot layout.
 fn current_page(dims: &[(f32, f32)], page_width: f32, scroll_y: f32) -> usize {
     let top = scroll_y.max(0.0);
     let mut y = PAGE_PAD_Y;
@@ -1580,10 +1582,10 @@ impl PdfView {
         })
     }
 
-    /// The topmost visible page index for the current scroll position.
+    /// The page across the middle of the viewport.
     fn current_page_index(&self) -> usize {
-        let scroll_y = f32::from(-self.scroll.offset().y);
-        current_page(&self.dims, self.page_width(), scroll_y)
+        let mid = f32::from(-self.scroll.offset().y + self.scroll.bounds().size.height / 2.0);
+        current_page(&self.dims, self.page_width(), mid)
     }
 
     /// Keep only the pages near the viewport rasterized: render missing / stale
@@ -1823,7 +1825,7 @@ impl Render for PdfView {
             .unwrap_or_default();
         let total = self.dims.len();
         let page_width = self.page_width();
-        let current = current_page(&self.dims, page_width, f32::from(-self.scroll.offset().y));
+        let current = self.current_page_index();
 
         // Page slots are *direct* children of the scroll container (assembled below), so
         // `ScrollHandle::bounds_for_item(i)` yields page `i`'s real laid-out bounds —
